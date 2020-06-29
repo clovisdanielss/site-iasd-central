@@ -1,12 +1,14 @@
 <template>
   <div id="home-component" class="row">
+    <EditHomeComponent v-if="edit" :submit="submit" :onClose="onClose"></EditHomeComponent>
+
     <div v-if="selected !== null" class="container-xl">
       <div class="col blog-main mt-3">
         <div class="blog-post">
           <a class="news-unselect" @click.prevent="onUnselect" href="#">Voltar</a>
 
           <h2 class="blog-post-title">{{newsArray[selected].header}}</h2>
-          <hr/>
+          <hr />
           <p class="blog-post-meta">
             {{newsArray[selected].date}}
             <br />
@@ -17,9 +19,13 @@
               v-bind:src="newsArray[selected].image"
               width="200px"
               height="200px"
-              class="rounded float-left"
+              class="rounded float-left mr-3"
             />
-            <p v-for="(text,index) in newsArray[selected].text.split('>')" :key="index">{{text}}</p>
+            <p
+              class="text-justify"
+              v-for="(text,index) in newsArray[selected].text.split('>')"
+              :key="index"
+            >{{text}}</p>
           </div>
           <hr />
         </div>
@@ -27,7 +33,7 @@
     </div>
     <div v-else id="home-component-news" class="col">
       <div class="col mt-3">
-        <h1 @click="onTest">Notícias</h1>
+        <h1>Notícias</h1>
         <hr />
       </div>
       <div class="news-container">
@@ -54,10 +60,13 @@
 
 
 <script>
+import EditHomeComponent from "../components/EditHomeComponent.vue";
+
 export default {
   data() {
     return {
       selected: null,
+      edit: false,
       newsArray: [
         {
           header: "Iniciativa de criação de site na IASD Central de Fortaleza",
@@ -73,17 +82,44 @@ export default {
   },
   mounted() {
     console.log("Dados carregados aqui!");
+    let urlSearch = new URLSearchParams(window.location.search);
+    if (urlSearch.get("edit")) {
+      this.edit = true;
+    }
   },
   methods: {
-    onTest() {
-      this.newsArray.push(this.newsArray[0]);
+    onClose() {
+      console.log("Chamado!");
+      this.edit = false;
     },
     onSelect(index) {
       this.selected = index;
     },
     onUnselect() {
       this.selected = null;
+    },
+    submit(news) {
+      console.log("Enviar dados aqui");
+      news.tags = news.tags.split(",");
+      this.newsArray.push(news);
+      news = {
+        header: "",
+        tags: "",
+        date: new Date(),
+        text: ``,
+        image: ""
+      };
     }
+  },
+  watch: {
+    newsToAppend: {
+      header: (oldVal, newVal) => {
+        console.log(newVal);
+      }
+    }
+  },
+  components: {
+    EditHomeComponent
   },
   name: "HomeComponent"
 };
@@ -103,8 +139,9 @@ export default {
 .news-unselect {
   float: right;
 }
-@media  (max-width: 1280px){
-    .news {
+
+@media (max-width: 1280px) {
+  .news {
     width: 50%;
     margin: 0px;
   }

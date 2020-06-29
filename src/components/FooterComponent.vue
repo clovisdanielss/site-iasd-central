@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer-component" class="footer">
+  <footer id="footer-component" class="footer mt-5">
     <div>
       <span class="text-muted">@Copyright © 2020</span>
       <span class="text-muted">Av. do Imperador, 891, Fortaleza - Ceará</span>
@@ -29,12 +29,11 @@ export default {
 
 <style scoped>
 .footer {
-  left: 0;
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  bottom: 0px;
   width: 100%;
   height: auto;
-  background-color: #f5f5f5;
+  background-color:#f5f5f5;
   font-size: 12px !important;
 }
 
@@ -60,6 +59,7 @@ span {
 @media(max-width: 578px){
     .footer{
         position: unset;
+        margin-top: 0!important;
     }
     .flexbox{
         display: flex;

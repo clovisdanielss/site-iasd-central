@@ -31,8 +31,16 @@
       crossorigin="anonymous"
     ></script>
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      #app {
+        background-color: white;
+      }
+      .relative {
+        position: relative;
+      }
+    </style>
   </head>
-  <body>
+  <body class="d-flex flex-column h-100 ">
     <noscript>
       <strong
         >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
@@ -41,6 +49,7 @@
       >
     </noscript>
     <div id="app"></div>
+
     <!-- built files will be auto injected -->
   </body>
 </html>

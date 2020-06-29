@@ -1,6 +1,8 @@
 <template>
-  <div id="about-view" class="container-xl">
-    <AboutComponent></AboutComponent>
+  <div>
+    <div id="about-view" class="container-xl">
+      <AboutComponent></AboutComponent>
+    </div>
     <FooterComponent></FooterComponent>
   </div>
 </template>

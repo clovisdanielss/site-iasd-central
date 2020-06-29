@@ -1,6 +1,8 @@
 <template>
-  <div id="contact-view" class="container-xl">
-    <ContactComponent></ContactComponent>
+  <div>
+    <div id="contact-view" class="container-xl">
+      <ContactComponent></ContactComponent>
+    </div>
     <FooterComponent></FooterComponent>
   </div>
 </template>

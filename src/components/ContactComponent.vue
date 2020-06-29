@@ -1,5 +1,11 @@
 <template>
-  <div id="contact-component" class="col">
+  <div id="contact-component" class="row">
+    <EditContactComponent
+      v-if="edit"
+      :submit="submit"
+      :departamentsArray="departamentsArray"
+      :onClose="onClose"
+    ></EditContactComponent>
     <div class="mt-3 col p-0">
       <h1>Contato</h1>
       <hr />
@@ -31,12 +37,12 @@
                   <hr />
                   <div v-for="(member,index) in departament.members" :key="index" class="row">
                     <div class="col">
-                      <h6>Nome:</h6>
-                      <h6>Contato:</h6>
+                      <h6 class="bold">Nome:</h6>
+                      <h6 class="bold">Contato:</h6>
                     </div>
                     <div class="col">
-                      <h6>{{member.name}}</h6>
-                      <h6>{{member.contact}}</h6>
+                      <h6 class="bold">{{member.name}}</h6>
+                      <h6 class="bold">{{member.contact}}</h6>
                     </div>
                     <hr />
                   </div>
@@ -51,10 +57,12 @@
 </template>
 
 <script>
+import EditContactComponent from "../components/EditContactComponent.vue";
 export default {
   name: "ContactComponent",
   data() {
     return {
+      edit: false,
       departamentsArray: [
         {
           name: "Pastoral",
@@ -71,7 +79,26 @@ export default {
       ]
     };
   },
+  components: {
+    EditContactComponent
+  },
+  mounted() {
+    console.log("Dados carregados aqui!");
+    let urlSearch = new URLSearchParams(window.location.search);
+    if (urlSearch.get("edit")) {
+      this.edit = true;
+    }
+    console.log(this.edit);
+  },
   methods: {
+    onClose() {
+      this.edit = false;
+    },
+    submit(departamentsArray) {
+      console.log("Enviar dados aqui");
+      this.departamentsArray = departamentsArray;
+    },
+
     onShowElement(event) {
       let index = event.target.getAttribute("data-index");
       if (!index) {
@@ -94,6 +121,10 @@ export default {
 </script>
 
 <style scoped>
+.bold {
+  font-weight: bold !important;
+}
+
 .icon-info {
   float: right;
 }
