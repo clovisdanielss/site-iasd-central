@@ -44,7 +44,7 @@
                       <h6 class="bold">{{member.name}}</h6>
                       <h6 class="bold">{{member.contact}}</h6>
                     </div>
-                    <hr />
+                    <hr class="separator"/>
                   </div>
                 </div>
               </td>
@@ -97,6 +97,7 @@ export default {
     submit(departamentsArray) {
       console.log("Enviar dados aqui");
       this.departamentsArray = departamentsArray;
+      this.edit = false;
     },
 
     onShowElement(event) {
@@ -121,6 +122,10 @@ export default {
 </script>
 
 <style scoped>
+.separator{
+  border-top: 1px solid rgba(0,0,0,.1);
+  width: 100%;
+}
 .bold {
   font-weight: bold !important;
 }
@@ -130,7 +135,7 @@ export default {
 }
 .td-info {
   overflow: hidden;
-  height: 100px;
+  height: auto;
 }
 
 .td-info.hide {

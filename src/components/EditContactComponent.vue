@@ -72,11 +72,11 @@
 
           <div class="absolute row">
             <div
-              class="row p-3 m-0"
+              class="row pl-3 pr-3 pt-3 m-0 h-50"
               v-for="(member,index) in departamentsToUpdate[selected].members"
               :key="index"
             >
-              <span class="float" @click="onRemoveMember(index)">
+              <span class="float p-1 pt-2 pb-2" @click="onRemoveMember(index)">
                 <i class="fas fa-times"></i>
               </span>
               <div class="p-0">
@@ -102,7 +102,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="985441322"
+                    placeholder="98544-1322"
                     aria-label="image"
                     aria-describedby="basic-addon1"
                     v-model="member.contact"
@@ -205,6 +205,9 @@ export default {
 </script>
 
 <style scoped>
+.h-50{
+  max-height: 60px;
+}
 .float {
   float: right;
 }
