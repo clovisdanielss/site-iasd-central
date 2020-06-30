@@ -61,27 +61,27 @@
 
 <script>
 import EditHomeComponent from "../components/EditHomeComponent.vue";
-
+import axios from 'axios'
 export default {
   data() {
     return {
       selected: null,
       edit: false,
       newsArray: [
-        {
-          header: "Iniciativa de criação de site na IASD Central de Fortaleza",
-          tags: ["Comunicação", "Site"],
-          date: new Date(),
-          text: `A inciativa foi tomada na comissão do dia 23/06/2020. 
-            Foi tomado então o esqueleto do projeto existente e tomado como base para construção do novo site`,
-          image:
-            "https://i.pinimg.com/originals/56/9a/dd/569add31abfa91769d824346e2b2346b.jpg"
-        }
+        
       ]
     };
   },
   mounted() {
-    console.log("Dados carregados aqui!");
+    axios
+      .get(process.env.VUE_APP_API + "news")
+      .then(result => {
+        console.log("Dados carregados", result);
+        this.newsArray = result.data;
+      })
+      .catch(err =>
+        console.error(`Erro no carregamento. Segue o erro: ${err}`)
+      );
     let urlSearch = new URLSearchParams(window.location.search);
     if (urlSearch.get("edit")) {
       this.edit = true;
@@ -99,7 +99,10 @@ export default {
       this.selected = null;
     },
     submit(news) {
-      console.log("Enviar dados aqui");
+      axios
+        .post(process.env.VUE_APP_API + "news", news)
+        .then(() => console.log("Funcionou!"))
+        .catch(err => console.error(`Segue o erro: ${err}`));
       news.tags = news.tags.split(",");
       this.newsArray.push(news);
       news = {
@@ -120,6 +123,9 @@ export default {
   },
   components: {
     EditHomeComponent
+  },
+  computed:{
+    axios
   },
   name: "HomeComponent"
 };

@@ -56,6 +56,8 @@
 <script>
 import EditAboutComponent from "../components/EditAboutComponent.vue";
 import { gmapApi } from "vue2-google-maps";
+import axios from "axios";
+
 export default {
   name: "AboutComponent",
   data() {
@@ -64,11 +66,21 @@ export default {
       text: `A IASD central de Fortaleza, foi a primeira igreja adventista
 a ser construída em Fortaleza. Ela se localiza no Centro de 
 Fortaleza, como você pode observar no mapa. Te aguardamos lá!
-`.split("\n").join(" ")
+`
+        .split("\n")
+        .join(" ")
     };
   },
   mounted() {
-    console.log("Dados carregados aqui!");
+    axios
+      .get(process.env.VUE_APP_API + "about")
+      .then(result => {
+        console.log("Dados carregados", result);
+        this.text = result.data.text;
+      })
+      .catch(err =>
+        console.error(`Erro no carregamento. Segue o erro: ${err}`)
+      );
     let urlSearch = new URLSearchParams(window.location.search);
     if (urlSearch.get("edit")) {
       this.edit = true;
@@ -79,7 +91,10 @@ Fortaleza, como você pode observar no mapa. Te aguardamos lá!
       this.edit = false;
     },
     submit(text) {
-      console.log("Enviar dados aqui");
+      axios
+        .post(process.env.VUE_APP_API + "about", text)
+        .then(() => console.log("Funcionou!"))
+        .catch(err => console.error(`Segue o erro: ${err}`));
       this.text = text;
     }
   },
@@ -87,7 +102,8 @@ Fortaleza, como você pode observar no mapa. Te aguardamos lá!
     EditAboutComponent
   },
   computed: {
-    google: gmapApi
+    google: gmapApi,
+    axios
   }
 };
 </script>

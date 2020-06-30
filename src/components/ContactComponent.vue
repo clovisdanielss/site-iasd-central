@@ -44,7 +44,7 @@
                       <h6 class="bold">{{member.name}}</h6>
                       <h6 class="bold">{{member.contact}}</h6>
                     </div>
-                    <hr class="separator"/>
+                    <hr class="separator" />
                   </div>
                 </div>
               </td>
@@ -58,6 +58,8 @@
 
 <script>
 import EditContactComponent from "../components/EditContactComponent.vue";
+import axios from "axios";
+
 export default {
   name: "ContactComponent",
   data() {
@@ -83,19 +85,32 @@ export default {
     EditContactComponent
   },
   mounted() {
-    console.log("Dados carregados aqui!");
+    axios
+      .get(process.env.VUE_APP_API + "contact")
+      .then(result => {
+        console.log("Dados carregados",result)
+        this.departamentsArray = result.data
+      })
+      .catch(err => console.error(`Erro no carregamento. Segue o erro: ${err}`));
     let urlSearch = new URLSearchParams(window.location.search);
     if (urlSearch.get("edit")) {
       this.edit = true;
     }
     console.log(this.edit);
   },
+  computed: {
+    axios
+  },
   methods: {
     onClose() {
       this.edit = false;
     },
+
     submit(departamentsArray) {
-      console.log("Enviar dados aqui");
+      axios
+        .post(process.env.VUE_APP_API + "contact", departamentsArray)
+        .then(() => console.log("Funcionou!"))
+        .catch(err => console.error(`Segue o erro: ${err}`));
       this.departamentsArray = departamentsArray;
       this.edit = false;
     },
@@ -122,8 +137,8 @@ export default {
 </script>
 
 <style scoped>
-.separator{
-  border-top: 1px solid rgba(0,0,0,.1);
+.separator {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
 }
 .bold {
